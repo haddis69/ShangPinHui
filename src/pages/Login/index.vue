@@ -8,6 +8,6 @@ export default {
     name:'Login'
 }
 </script>
-<style lang="">
+<style scoped>
     
 </style>

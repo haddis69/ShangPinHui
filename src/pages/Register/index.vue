@@ -8,6 +8,6 @@ export default {
     name:'Register'
 }
 </script>
-<style lang="">
+<style scoped>
     
 </style>

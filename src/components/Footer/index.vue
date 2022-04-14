@@ -100,7 +100,7 @@
     name:'Footer'
   }
 </script>
-<style>
+<style scoped>
 .footer {
   background-color: #eaeaea;
 }

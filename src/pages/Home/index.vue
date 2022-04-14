@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- TypeNav组件不需要注册 -->
         <TypeNav/>
         <ListContainer/>
         <Recommend/>

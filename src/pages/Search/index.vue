@@ -8,6 +8,6 @@ export default {
     name:'Search'
 }
 </script>
-<style lang="">
+<style scoped>
     
 </style>
