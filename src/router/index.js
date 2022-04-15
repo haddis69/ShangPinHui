@@ -9,21 +9,25 @@ export default new VueRouter({
     routes:[
         {
             path:'/home',
+            name:'home',
             component:Home,
             meta:{show:true}
         },
         {
             path:'/login',
+            name:'login',
             component:Login,
             meta:{show:false}
         },
         {
             path:'/register',
+            name:'register',
             component:Register,
             meta:{show:false}
         },
         {
             path:'/search',
+            name:'search',
             component:Search,
             meta:{show:true}
         },
