@@ -109,8 +109,19 @@
     </div>
 </template>
 <script>
+import{mapState} from 'vuex'
 export default {
-    name:'ListContainer'
+    name:'ListContainer',
+    mounted() {
+      //挂在之后开始请求数据，接下来还是一样的在store中dispatch和commit，一样的套路
+      this.$store.dispatch('getBannerList');
+    },
+    computed: {
+      //同样的方法解析数据
+      ...mapState({
+        bannerList:state=>state.home.bannerList
+      })
+    }
 }
 </script>
 <style>

@@ -1,31 +1,33 @@
 <template lang="">
     <div class="type-nav">
         <div class="container">
-            <div @mouseleave="leaveIndex">
+            <div @mouseleave="leaveIndex" @mouseenter="enterShow">
                 <h2 class="all">全部商品分类</h2>
-                <div class="sort">
-                    <div class="all-sort-list2" @click="goSearch">
-                        <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId" :class="{cur:currentIndex==index}">
-                            <h3 @mouseenter="changeIndex(index)">
-                                <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
-                            </h3>
-                            <div class="item-list clearfix" :style="{display:currentIndex==index?'block':'none'}">
-                                <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
-                                    <dl class="fore">
-                                        <dt>
-                                            <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
-                                        </dt>
-                                        <dd>
-                                            <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
-                                                <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
-                                            </em>
-                                        </dd>
-                                    </dl>
+                <transition name="sort">
+                    <div class="sort" v-show="show">
+                        <div class="all-sort-list2" @click="goSearch">
+                            <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId" :class="{cur:currentIndex==index}">
+                                <h3 @mouseenter="changeIndex(index)">
+                                    <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+                                </h3>
+                                <div class="item-list clearfix" :style="{display:currentIndex==index?'block':'none'}">
+                                    <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
+                                        <dl class="fore">
+                                            <dt>
+                                                <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
+                                            </dt>
+                                            <dd>
+                                                <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
+                                                    <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                                                </em>
+                                            </dd>
+                                        </dl>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </transition>
             </div>
             <nav class="nav">
                 <a href="###">服装城</a>
@@ -48,11 +50,17 @@ export default {
     name:'TypeNav',
     data() {
         return {
-            currentIndex:-1
+            currentIndex:-1,
+            show:true
         }
     },
     mounted() {
-        this.$store.dispatch('categoryList');
+        //原来有这行语句 但是页面跳转组件就会销毁 其它组件挂载的时候还会再发请求，太耗费性能
+        //所以把这行代码移到了App.vue里
+        // this.$store.dispatch('categoryList');
+        if(this.$route.path!=='/home'){
+            this.show=false;
+        }
     },
     computed: {
         //mapState中传入对象的时候，右侧为一个函数，当需要使用这个值的时候，右侧的函数就会立刻执行
@@ -74,6 +82,10 @@ export default {
         },50),
         leaveIndex(){
             this.currentIndex=-1;
+            //只有在search组件才会在鼠标移除的时候收起三级联动菜单
+            if(this.$route.path!=='/home'){
+                this.show=false;
+            }
         },
         //不能使用声明式路由导航，因为这是循环出来的，太耗费性能
         //不能在a标签上加@click事件，同样耗费性能不太好
@@ -87,8 +99,8 @@ export default {
             let element=event.target;
             // console.log(element.dataset);
             let {categoryname,category1id,category2id,category3id}=element.dataset;
-            let location={name:"search"},
-                query={categoryName:categoryname};
+            let location={name:"search"};
+            let query={categoryName:categoryname};
             if(categoryname){
                 if(category1id){
                     query.category1Id=category1id;
@@ -97,10 +109,18 @@ export default {
                 }else{
                     query.category3Id=category3id;
                 }
-                location.query=query;
-                //实现要在router文件夹里注册name属性，否则不能通过$router.push的name方法找到search
-                this.$router.push(location);
+                // location.query=query;
+                // this.$router.push(location);
+                if(this.$route.params){
+                    location.params=this.$route.params;
+                    location.query=query;
+                    //实现要在router文件夹里注册name属性，否则不能通过$router.push的name方法找到search
+                    this.$router.push(location);
+                }
             }
+        },
+        enterShow(){
+            this.show=true;
         }
     },
 }
@@ -140,6 +160,19 @@ export default {
   position: absolute;
   background: #fafafa;
   z-index: 999;
+}
+/* 过度动画样式 */
+/* 过度动画的开始阶段的进入样式 */
+.type-nav .container .sort-enter{
+    height: 0;
+}
+/* 过度动画的开始阶段的结束样式 */
+.type-nav .container .sort-enter-to{
+    height: 461px;
+}
+/* 过度动画的开始阶段的配置属性 */
+.type-nav .container .sort-enter-active{
+    transition: all 0.5s linear;
 }
 .type-nav .container .sort .all-sort-list2 .item h3 {
   line-height: 30px;

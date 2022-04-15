@@ -1,6 +1,6 @@
 <template lang="">
     <div>
-        我是搜索
+        <TypeNav/>
     </div>
 </template>
 <script>

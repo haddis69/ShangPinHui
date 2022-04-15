@@ -14,7 +14,11 @@ export default {
   components: {
     Header,
     Footer
-  }
+  },
+  mounted() {
+    //App.vue只会挂载一次
+    this.$store.dispatch('categoryList');
+  },
 }
 </script>
 
