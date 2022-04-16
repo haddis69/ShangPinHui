@@ -1,115 +1,94 @@
 <template>
-    <div class="list-container">
-        <div class="sortList clearfix">
-            <div class="center">
-                <!--banner轮播-->
-                <div class="swiper-container" id="mySwiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="./images/banner1.jpg" />
-                        </div>
-                        <!-- <div class="swiper-slide">
-                            <img src="./images/banner2.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="./images/banner3.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="./images/banner4.jpg" />
-                        </div> -->
-                    </div>
-                    <!-- 如果需要分页器 -->
-                    <div class="swiper-pagination"></div>
-
-                    <!-- 如果需要导航按钮 -->
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
-            </div>
-            <div class="right">
-                <div class="news">
-                    <h4>
-                        <em class="fl">尚品汇快报</em>
-                        <span class="fr tip">更多 ></span>
-                    </h4>
-                    <div class="clearix"></div>
-                    <ul class="news-list unstyled">
-                        <li>
-                            <span class="bold">[特惠]</span>备战开学季 全民半价购数码
-                        </li>
-                        <li>
-                            <span class="bold">[公告]</span>备战开学季 全民半价购数码
-                        </li>
-                        <li>
-                            <span class="bold">[特惠]</span>备战开学季 全民半价购数码
-                        </li>
-                        <li>
-                            <span class="bold">[公告]</span>备战开学季 全民半价购数码
-                        </li>
-                        <li>
-                            <span class="bold">[特惠]</span>备战开学季 全民半价购数码
-                        </li>
-                    </ul>
-                </div>
-                <ul class="lifeservices">
-                    <li class=" life-item ">
-                        <i class="list-item"></i>
-                        <span class="service-intro">话费</span>
+  <div class="list-container">
+    <div class="sortList clearfix">
+        <div class="center">
+            <!--banner轮播-->
+        <Carousel :list="bannerList"/>
+        </div>
+        <div class="right">
+            <div class="news">
+                <h4>
+                    <em class="fl">尚品汇快报</em>
+                    <span class="fr tip">更多 ></span>
+                </h4>
+                <div class="clearix"></div>
+                <ul class="news-list unstyled">
+                    <li>
+                        <span class="bold">[特惠]</span>备战开学季 全民半价购数码
                     </li>
-                    <li class=" life-item ">
-                        <i class="list-item"></i>
-                        <span class="service-intro">机票</span>
+                    <li>
+                        <span class="bold">[公告]</span>备战开学季 全民半价购数码
                     </li>
-                    <li class=" life-item ">
-                        <i class="list-item"></i>
-                        <span class="service-intro">电影票</span>
+                    <li>
+                        <span class="bold">[特惠]</span>备战开学季 全民半价购数码
                     </li>
-                    <li class=" life-item ">
-                        <i class="list-item"></i>
-                        <span class="service-intro">游戏</span>
+                    <li>
+                        <span class="bold">[公告]</span>备战开学季 全民半价购数码
                     </li>
-                    <li class=" life-item">
-                        <i class="list-item"></i>
-                        <span class="service-intro">彩票</span>
-                    </li>
-                    <li class=" life-item">
-                        <i class="list-item"></i>
-                        <span class="service-intro">加油站</span>
-                    </li>
-                    <li class=" life-item">
-                        <i class="list-item"></i>
-                        <span class="service-intro">酒店</span>
-                    </li>
-                    <li class=" life-item">
-                        <i class="list-item"></i>
-                        <span class="service-intro">火车票</span>
-                    </li>
-                    <li class=" life-item ">
-                        <i class="list-item"></i>
-                        <span class="service-intro">众筹</span>
-                    </li>
-                    <li class=" life-item">
-                        <i class="list-item"></i>
-                        <span class="service-intro">理财</span>
-                    </li>
-                    <li class=" life-item">
-                        <i class="list-item"></i>
-                        <span class="service-intro">礼品卡</span>
-                    </li>
-                    <li class=" life-item">
-                        <i class="list-item"></i>
-                        <span class="service-intro">白条</span>
+                    <li>
+                        <span class="bold">[特惠]</span>备战开学季 全民半价购数码
                     </li>
                 </ul>
-                <div class="ads">
-                    <img src="./images/ad1.png" />
-                </div>
+            </div>
+            <ul class="lifeservices">
+                <li class=" life-item ">
+                    <i class="list-item"></i>
+                    <span class="service-intro">话费</span>
+                </li>
+                <li class=" life-item ">
+                    <i class="list-item"></i>
+                    <span class="service-intro">机票</span>
+                </li>
+                <li class=" life-item ">
+                    <i class="list-item"></i>
+                    <span class="service-intro">电影票</span>
+                </li>
+                <li class=" life-item ">
+                    <i class="list-item"></i>
+                    <span class="service-intro">游戏</span>
+                </li>
+                <li class=" life-item">
+                    <i class="list-item"></i>
+                    <span class="service-intro">彩票</span>
+                </li>
+                <li class=" life-item">
+                    <i class="list-item"></i>
+                    <span class="service-intro">加油站</span>
+                </li>
+                <li class=" life-item">
+                    <i class="list-item"></i>
+                    <span class="service-intro">酒店</span>
+                </li>
+                <li class=" life-item">
+                    <i class="list-item"></i>
+                    <span class="service-intro">火车票</span>
+                </li>
+                <li class=" life-item ">
+                    <i class="list-item"></i>
+                    <span class="service-intro">众筹</span>
+                </li>
+                <li class=" life-item">
+                    <i class="list-item"></i>
+                    <span class="service-intro">理财</span>
+                </li>
+                <li class=" life-item">
+                    <i class="list-item"></i>
+                    <span class="service-intro">礼品卡</span>
+                </li>
+                <li class=" life-item">
+                    <i class="list-item"></i>
+                    <span class="service-intro">白条</span>
+                </li>
+            </ul>
+            <div class="ads">
+                <img src="./images/ad1.png" />
             </div>
         </div>
     </div>
+</div>
 </template>
 <script>
-import{mapState} from 'vuex'
+import{mapState} from 'vuex';
 export default {
     name:'ListContainer',
     mounted() {
@@ -121,7 +100,13 @@ export default {
       ...mapState({
         bannerList:state=>state.home.bannerList
       })
-    }
+    },
+    //这里不能放在mounted里面，因为服务器发请求，再从store返回数据，再v-for遍历，生成结构都需要时间，而new Swiper要保证已经有结构
+    //不能使用update，只要页面更新，不管什么地方就要重新new Swiper,不实际
+    //watch是监听数据变化的，有函数和对象两种写法。handler这个词是固定的，里面传两个值，新值和旧值
+    //nextTick是页面重新渲染DOM，并且循环完成之后开始执行。修改数据之后立即执行DOM，获取新的数据
+    //由于配合上了watch handler,所以只在bannerList变化的时候才会执行该函数
+    //nextTick可以保证页面有结构，不会出现上述mounted中空白的情况，并且由于很多插件需要加载时间，所以经常配合插件使用
 }
 </script>
 <style>

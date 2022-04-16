@@ -10,3 +10,4 @@ export const reqCategoryList =()=>requests({url:'/product/getBaseCategoryList',m
 //已经写了baseUrl
 //和上面是两种写法
 export const reqGetBannerList=()=>mockRequests.get('/banner');
+export const reqGetFloorList=()=>mockRequests.get('/floor');
