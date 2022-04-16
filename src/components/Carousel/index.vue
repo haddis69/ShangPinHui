@@ -3,10 +3,10 @@
     <div class="swiper-wrapper">
       <div
         class="swiper-slide"
-        v-for="(carouse, index) in list"
-        :key="carouse.id"
+        v-for="(carousel, index) in list"
+        :key="carousel.id"
       >
-        <img :src="carouse.imgUrl" />
+        <img :src="carousel.imgUrl" />
       </div>
     </div>
     <!-- 如果需要分页器 -->
