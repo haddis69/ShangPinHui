@@ -98,6 +98,7 @@ export default {
         goSearch(event){
             let element=event.target;
             // console.log(element.dataset);
+            //event.target拿到点击的标签对象，event.target.dataset拿到这个标签对象的自定义属性值，例如data-categoryname
             let {categoryname,category1id,category2id,category3id}=element.dataset;
             let location={name:"search"};
             let query={categoryName:categoryname};

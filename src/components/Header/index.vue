@@ -57,6 +57,12 @@
           }
         }
       },
+      mounted() {
+        //执行函数的组件通过$bus的on事件，因为前文的emit的值一样，都是clear，这里on就执行具体的事件
+        this.$bus.$on("clear",()=>{
+          this.keyword='';
+        })
+      },
   }
 </script>
 <style scoped>

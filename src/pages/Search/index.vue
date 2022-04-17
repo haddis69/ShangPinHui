@@ -11,15 +11,14 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-show="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
+            <li class="with-x" v-show="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">x</i></li>
+            <li class="with-x" v-show="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">x</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @tradeMarkInfo="tradeMarkInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -174,6 +173,41 @@ export default {
   methods: {
     getData(){
       this.$store.dispatch('getSearchList',this.searchParams);
+    },
+    removeCategoryName(){
+      //上面的面包屑显示与否是双向绑定的，categoryName置空上面自然就没了,当然categoryid也要置空
+      this.searchParams.categoryName=undefined;
+      this.searchParams.category1Id=undefined;
+      this.searchParams.category2Id=undefined;
+      this.searchParams.category3Id=undefined;
+      //还要再发一次请求
+      this.getData();
+      //地址栏清空,自己跳自己，就清空query了
+      //如果有params,就应该带着，本意是删除query
+      if(this.$route.params){
+        this.$router.push({name:'search',params:this.$route.params});
+      }
+    },
+    removeKeyword(){
+      this.searchParams.keyword='';
+      this.getData();
+      // main.js中注册了全局时间总线之后，这里emit想执行的函数
+      this.$bus.$emit("clear");
+      if(this.$route.query){
+        this.$router.push({name:'search',query:this.$route.query});
+      }
+    },
+    removeTrademark(){
+      this.searchParams.trademark='';
+      this.getData();
+    },
+    //子给父传参数，通常使用自定义事件
+    //父组件给子组件在标签里注入一个@开头的自定义事件，值是一个回调函数
+    //子组件emit监听这个时间，并且第二个参数里就是想要携带的参数值
+    //父组件这边的回调函数就能在括号里使用这个参数值
+    tradeMarkInfo(trademark){
+      this.searchParams.trademark=`${trademark.tmId}:${trademark.tmName}`;
+      this.getData();
     }
   },
   watch: {
@@ -184,9 +218,10 @@ export default {
       //换条件搜索之后，searchParams的catagoryId不会清空
       //categoryName和keyWord不重新置空很好理解，每次重新搜索都会赋值，其余的交给后端
       //而categoryId如果不置空就会被动携带
-      this.searchParams.category1Id='';
-      this.searchParams.category2Id='';
-      this.searchParams.category3Id='';
+      //属性值为空的字段还是被带给服务器，但是写成undefined就不会带给服务器了
+      this.searchParams.category1Id=undefined;
+      this.searchParams.category2Id=undefined;
+      this.searchParams.category3Id=undefined;
     }
   },
 };

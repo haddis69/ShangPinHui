@@ -14,6 +14,10 @@ Vue.component(Carousel.name,Carousel);
 Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
+  //全局事件总线
+  beforeCreate(){
+    Vue.prototype.$bus=this;
+  },
   //主文件里引入并使用路由
   router,
   //主文件里引入并使用store，每个组件实例对象上都有了$store属性
