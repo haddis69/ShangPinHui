@@ -13,10 +13,12 @@
       </div>
     </div>
     <div class="type-wrap" v-for="(attr,index) in attrsList" :key="attr.attrId">
+      <!-- 平台售卖属性 例如颜色 -->
       <div class="fl key">{{attr.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrvalue,index) in attr.attrValueList" :key="index">
+          <!-- 属性值，例如黑色 -->
+          <li v-for="(attrvalue,index) in attr.attrValueList" :key="index" @click="attrInfo(attr,attrvalue)">
             <a>{{attrvalue}}</a>
           </li>
         </ul>
@@ -34,9 +36,12 @@ export default {
     ...mapGetters(['trademarkList','attrsList'])
   },
   methods: {
-    //自定义时间
+    //自定义事件
     tradeMarkHandler(trademark){
       this.$emit('tradeMarkInfo',trademark);
+    },
+    attrInfo(attr,attrvalue){
+      this.$emit('attrInfo',attr,attrvalue)
     }
   },
 };

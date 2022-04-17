@@ -14,34 +14,23 @@
             <li class="with-x" v-show="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
             <li class="with-x" v-show="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">x</i></li>
             <li class="with-x" v-show="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">x</i></li>
+            <li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">{{attrValue.split(":")[1]}}<i @click="removeAttr(index)">x</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @tradeMarkInfo="tradeMarkInfo"/>
+        <SearchSelector @tradeMarkInfo="tradeMarkInfo" @attrInfo="attrInfo"/>
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:isOne}" @click="changeOrder('1')">
+                  <a href="#">综合 <span v-show="isOne" class="iconfont" :class="{'icon-direction-up':isAsc,'icon-direction-down':isDesc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:isTwo}" @click="changeOrder('2')">
+                  <a href="#">价格 <span v-show="isTwo" class="iconfont" :class="{'icon-direction-up':isAsc,'icon-direction-down':isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -87,35 +76,7 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+        <Pagination/>
         </div>
       </div>
     </div>
@@ -144,7 +105,7 @@ export default {
         //关键字
         keyword: "",
         //价格升序还是降序
-        order: "",
+        order: "1:desc",
         //分页器当前第几页
         pageNo: 1,
         //每页有几条数据
@@ -168,7 +129,19 @@ export default {
   },
   computed:{
     //Getters不分模块，从数组中捞，捞出来的数据直接就能用
-    ...mapGetters(['goodsList'])
+    ...mapGetters(['goodsList']),
+    isOne(){
+      return this.searchParams.order.indexOf(1)!=-1;
+    },
+    isTwo(){
+      return this.searchParams.order.indexOf(2)!=-1;
+    },
+    isAsc(){
+      return this.searchParams.order.indexOf('asc')!=-1;
+    },
+    isDesc(){
+      return this.searchParams.order.indexOf('desc')!=-1;
+    }
   },
   methods: {
     getData(){
@@ -203,11 +176,42 @@ export default {
     },
     //子给父传参数，通常使用自定义事件
     //父组件给子组件在标签里注入一个@开头的自定义事件，值是一个回调函数
-    //子组件emit监听这个时间，并且第二个参数里就是想要携带的参数值
+    //子组件emit监听这个事件，并且第二个参数里就是想要携带的参数值
     //父组件这边的回调函数就能在括号里使用这个参数值
     tradeMarkInfo(trademark){
       this.searchParams.trademark=`${trademark.tmId}:${trademark.tmName}`;
       this.getData();
+    },
+    attrInfo(attr,attrValue){
+        //这个格式是由服务器的数据类型决定的
+        let props=`${attr.attrId}:${attrValue}:${attr.attrName}`;
+        //数组去重
+        if(this.searchParams.props.indexOf(props)===-1){
+          this.searchParams.props.push(props);
+        }
+        this.getData();
+    },
+    removeAttr(index){
+      this.searchParams.props.splice(index,1);
+      this.getData();
+    },
+    //传入的参数根据点击的li不同，flag可能有2个值
+    changeOrder(flag){
+      let originOrder=this.searchParams.order;
+      // originalFlag是1 originalSort是desc 这是默认值
+      //但是下面重新给this.searchParams.order赋值之后，originFlag，originSort就会在页面重新渲染之后取得新值
+      //至于升序降序的具体功能，那是后端完成的，不是前端的逻辑代码
+      let originFlag=originOrder.split(":")[0],
+          originSort=originOrder.split(":")[1],
+          newOrder='';
+      if(flag==originFlag){
+        newOrder=`${originFlag}:${originSort=='desc'?'asc':'desc'}`;
+      }else{
+        newOrder=`${flag}:${'desc'}`
+      }
+      this.searchParams.order=newOrder;
+      this.getData();
+      
     }
   },
   watch: {
