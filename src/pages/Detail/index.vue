@@ -97,12 +97,12 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum"/>
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum>1?skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -351,6 +351,11 @@ export default {
     ImageList,
     Zoom,
   },
+  data() {
+    return {
+      skuNum:1
+    }
+  },
   mounted() {
     this.$store.dispatch("getGoodInfo", this.$route.params.skuid);
   },
@@ -369,6 +374,28 @@ export default {
         item.isChecked='0';
       });
       saleAttrValue.isChecked='1';
+    },
+    changeSkuNum(event){
+      let value=event.target.value*1;
+      if(isNaN(value)|| value<1){
+        this.skuNum=1;
+      }else{
+        this.skuNum=parseInt(value);
+      }
+    },
+    //加入购物车,这个本质也是一个Promise，需要等待那边发请求的结果
+    async addShopCart(){
+      //接住了一个Promise的返回值,需要用await等待这个Promise的结果
+      // let result = await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum});
+      // console.log(result);   
+      // result的返回值是ok,这个值需要等待
+      //所以可以使用try catch，如果try里的语句成功，即另一边返回的值(result)是成功值，就不catch，否则就执行catch
+      try{
+        await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum});
+        this.$router.push({name:'addcartsuccess'});
+      }catch(error){
+        console.log(error.message);
+      }
     }
   },
 };
