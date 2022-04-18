@@ -7,31 +7,38 @@
     <section class="con">
       <!-- 导航路径区域 -->
       <div class="conPoin">
-        <span>手机、数码、通讯</span>
-        <span>手机</span>
-        <span>Apple苹果</span>
-        <span>iphone 6S系类</span>
+        <span v-show="categoryView.category1Name">{{
+          categoryView.category1Name
+        }}</span>
+        <span v-show="categoryView.category2Name">{{
+          categoryView.category2Name
+        }}</span>
+        <span v-show="categoryView.category3Name">{{
+          categoryView.category3Name
+        }}</span>
       </div>
       <!-- 主要内容区域 -->
       <div class="mainCon">
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom :skuImageList="skuImageList" />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList :skuImageList="skuImageList" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
           <div class="goodsDetail">
-            <h3 class="InfoName">Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h3>
-            <p class="news">推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</p>
+            <h3 class="InfoName">{{ skuInfo.skuName }}</h3>
+            <p class="news">{{ skuInfo.skuDesc }}</p>
             <div class="priceArea">
               <div class="priceArea1">
-                <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
+                <div class="title">
+                  价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格
+                </div>
                 <div class="price">
                   <i>¥</i>
-                  <em>5299</em>
+                  <em>{{ skuInfo.price }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -45,14 +52,20 @@
                 </div>
                 <div class="fixWidth">
                   <i class="red-bg">加价购</i>
-                  <em class="t-gray">满999.00另加20.00元，或满1999.00另加30.00元，或满2999.00另加40.00元，即可在购物车换购热销商品</em>
+                  <em class="t-gray"
+                    >满999.00另加20.00元，或满1999.00另加30.00元，或满2999.00另加40.00元，即可在购物车换购热销商品</em
+                  >
                 </div>
               </div>
             </div>
             <div class="support">
               <div class="supportArea">
-                <div class="title">支&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;持</div>
-                <div class="fixWidth">以旧换新，闲置手机回收 4G套餐超值抢 礼品购</div>
+                <div class="title">
+                  支&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;持
+                </div>
+                <div class="fixWidth">
+                  以旧换新，闲置手机回收 4G套餐超值抢 礼品购
+                </div>
               </div>
               <div class="supportArea">
                 <div class="title">配 送 至</div>
@@ -64,34 +77,27 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd changepirce="0" class="active">公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd changepirce="0" class="active">官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
+              <dl
+                v-for="(spuSaleAttr, index) in spuSaleAttrList"
+                :key="spuSaleAttr.id"
+              >
+                <dt class="title">选择{{ spuSaleAttr.saleAttrName }}</dt>
+                <dd
+                  changepirce="0"
+                  :class="{ active: spuSaleAttrValue.isChecked == 1 }"
+                  v-for="(
+                    spuSaleAttrValue, index
+                  ) in spuSaleAttr.spuSaleAttrValueList"
+                  :key="index"
+                  @click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
+                >
+                  {{ spuSaleAttrValue.saleAttrValueName }}
+                </dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
+                <input autocomplete="off" class="itxt" />
                 <a href="javascript:" class="plus">+</a>
                 <a href="javascript:" class="mins">-</a>
               </div>
@@ -129,7 +135,7 @@
                   <div class="p-img">
                     <img src="./images/part01.png" />
                   </div>
-                  <div class="attr">Apple苹果iPhone 6s (A1699) </div>
+                  <div class="attr">Apple苹果iPhone 6s (A1699)</div>
                   <div class="price">
                     <em>¥</em>
                     <i>6088.00</i>
@@ -236,7 +242,7 @@
                 <img src="./images/dp01.png" />
                 <p>Feless费勒斯VR</p>
                 <label>
-                  <input type="checkbox" value="39">
+                  <input type="checkbox" value="39" />
                   <span>39</span>
                 </label>
               </li>
@@ -244,7 +250,7 @@
                 <img src="./images/dp02.png" />
                 <p>Feless费勒斯VR</p>
                 <label>
-                  <input type="checkbox" value="50">
+                  <input type="checkbox" value="50" />
                   <span>50</span>
                 </label>
               </li>
@@ -252,7 +258,7 @@
                 <img src="./images/dp03.png" />
                 <p>Feless费勒斯VR</p>
                 <label>
-                  <input type="checkbox" value="59">
+                  <input type="checkbox" value="59" />
                   <span>59</span>
                 </label>
               </li>
@@ -260,16 +266,14 @@
                 <img src="./images/dp04.png" />
                 <p>Feless费勒斯VR</p>
                 <label>
-                  <input type="checkbox" value="99">
+                  <input type="checkbox" value="99" />
                   <span>99</span>
                 </label>
               </li>
             </ul>
             <div class="result">
               <div class="num">已选购0件商品</div>
-              <div class="price-tit">
-                套餐价
-              </div>
+              <div class="price-tit">套餐价</div>
               <div class="price">￥5299</div>
               <button class="addshopcar">加入购物车</button>
             </div>
@@ -278,29 +282,19 @@
         <div class="intro">
           <ul class="tab-wraped">
             <li class="active">
-              <a href="###">
-                商品介绍
-              </a>
+              <a href="###"> 商品介绍 </a>
             </li>
             <li>
-              <a href="###">
-                规格与包装
-              </a>
+              <a href="###"> 规格与包装 </a>
             </li>
             <li>
-              <a href="###">
-                售后保障
-              </a>
+              <a href="###"> 售后保障 </a>
             </li>
             <li>
-              <a href="###">
-                商品评价
-              </a>
+              <a href="###"> 商品评价 </a>
             </li>
             <li>
-              <a href="###">
-                手机社区
-              </a>
+              <a href="###"> 手机社区 </a>
             </li>
           </ul>
           <div class="tab-content">
@@ -347,17 +341,37 @@
 </template>
 
 <script>
-  import ImageList from './ImageList/ImageList'
-  import Zoom from './Zoom/Zoom'
+import { mapGetters } from "vuex";
+import ImageList from "./ImageList/ImageList";
+import Zoom from "./Zoom/Zoom";
 
-  export default {
-    name: 'Detail',
-    
-    components: {
-      ImageList,
-      Zoom
+export default {
+  name: "Detail",
+  components: {
+    ImageList,
+    Zoom,
+  },
+  mounted() {
+    this.$store.dispatch("getGoodInfo", this.$route.params.skuid);
+  },
+  computed: {
+    ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
+    // 同样是为了解决空数组或者对象打点的情况
+    skuImageList() {
+      return this.skuInfo.skuImageList || [];
+    },
+  },
+  methods: {
+    changeActive(saleAttrValue,attr){
+      //两个参数分别是点击的那个属性本身和这一对dd的父属性spuSaleAttr.spuSaleAttrValueList
+      //先排它，把所有置为0再将点击的那个置为1
+      attr.forEach(item => {
+        item.isChecked='0';
+      });
+      saleAttrValue.isChecked='1';
     }
-  }
+  },
+};
 </script>
 
 <style scoped>
@@ -584,26 +598,74 @@
   border-bottom: 1px dashed #ededed;
   line-height: 28px;
 }
-.detail .product-detail .aside .tabContent .tab-pane:nth-child(1) .goodsList > li {
+.detail
+  .product-detail
+  .aside
+  .tabContent
+  .tab-pane:nth-child(1)
+  .goodsList
+  > li {
   margin: 5px 0 15px;
   border-bottom: 1px solid #ededed;
   padding-bottom: 5px;
 }
-.detail .product-detail .aside .tabContent .tab-pane:nth-child(1) .goodsList > li .list-wrap .p-img {
+.detail
+  .product-detail
+  .aside
+  .tabContent
+  .tab-pane:nth-child(1)
+  .goodsList
+  > li
+  .list-wrap
+  .p-img {
   text-align: center;
 }
-.detail .product-detail .aside .tabContent .tab-pane:nth-child(1) .goodsList > li .list-wrap .p-img img {
+.detail
+  .product-detail
+  .aside
+  .tabContent
+  .tab-pane:nth-child(1)
+  .goodsList
+  > li
+  .list-wrap
+  .p-img
+  img {
   width: 152px;
 }
-.detail .product-detail .aside .tabContent .tab-pane:nth-child(1) .goodsList > li .list-wrap .price {
+.detail
+  .product-detail
+  .aside
+  .tabContent
+  .tab-pane:nth-child(1)
+  .goodsList
+  > li
+  .list-wrap
+  .price {
   font-size: 16px;
   color: #c81623;
 }
-.detail .product-detail .aside .tabContent .tab-pane:nth-child(1) .goodsList > li .list-wrap .operate {
+.detail
+  .product-detail
+  .aside
+  .tabContent
+  .tab-pane:nth-child(1)
+  .goodsList
+  > li
+  .list-wrap
+  .operate {
   text-align: center;
   margin: 5px 0;
 }
-.detail .product-detail .aside .tabContent .tab-pane:nth-child(1) .goodsList > li .list-wrap .operate a {
+.detail
+  .product-detail
+  .aside
+  .tabContent
+  .tab-pane:nth-child(1)
+  .goodsList
+  > li
+  .list-wrap
+  .operate
+  a {
   background-color: transparent;
   border: 1px solid #8c8c8c;
   color: #8c8c8c;
@@ -672,10 +734,26 @@
   display: block;
   position: relative;
 }
-.detail .product-detail .detail .fitting .good-suits .suits .suitsItem label input {
+.detail
+  .product-detail
+  .detail
+  .fitting
+  .good-suits
+  .suits
+  .suitsItem
+  label
+  input {
   vertical-align: middle;
 }
-.detail .product-detail .detail .fitting .good-suits .suits .suitsItem label span {
+.detail
+  .product-detail
+  .detail
+  .fitting
+  .good-suits
+  .suits
+  .suitsItem
+  label
+  span {
   vertical-align: middle;
 }
 .detail .product-detail .detail .fitting .good-suits .result {
@@ -695,7 +773,7 @@
   margin-bottom: 10px;
 }
 .detail .product-detail .detail .fitting .good-suits .result .price {
-  color: #B1191A;
+  color: #b1191a;
   font-size: 16px;
   margin-bottom: 10px;
 }
@@ -739,14 +817,33 @@
 .detail .product-detail .detail .intro .tab-content .tab-pane.active {
   display: block;
 }
-.detail .product-detail .detail .intro .tab-content .tab-pane:nth-child(1) .goods-intro {
+.detail
+  .product-detail
+  .detail
+  .intro
+  .tab-content
+  .tab-pane:nth-child(1)
+  .goods-intro {
   padding-left: 10px;
 }
-.detail .product-detail .detail .intro .tab-content .tab-pane:nth-child(1) .goods-intro li {
+.detail
+  .product-detail
+  .detail
+  .intro
+  .tab-content
+  .tab-pane:nth-child(1)
+  .goods-intro
+  li {
   margin: 10px 0;
 }
-.detail .product-detail .detail .intro .tab-content .tab-pane:nth-child(1) .intro-detail img {
+.detail
+  .product-detail
+  .detail
+  .intro
+  .tab-content
+  .tab-pane:nth-child(1)
+  .intro-detail
+  img {
   width: 100%;
 }
-
 </style>

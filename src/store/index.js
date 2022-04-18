@@ -4,10 +4,12 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 import home from "./home";
 import search from "./search";
+import detail from "./detail";
 //对外暴露一个store实例，里面传入配置信息,这里是模块
 export default new Vuex.Store({
     modules:{
         home,
-        search
+        search,
+        detail
     }
 });

@@ -27,3 +27,6 @@ export const reqGetFloorList=()=>mockRequests.get('/floor');
  */
 //当前服务器接口，请求的参数至少是一个空对象。post的params参数是data属性
 export const reqGetSearchInfo=(params)=>requests({url:'/list',method:'POST',data:params})
+
+//产品详情信息   /api/item/{skuid}
+export const reqGoodsInfo=(skuid)=>requests({url:`/item/${skuid}`,method:'GET'})
