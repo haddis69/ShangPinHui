@@ -43,7 +43,7 @@
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" :checked="agree" />
+        <input name="m1" type="checkbox" :checked="agree" @change="isAgree"/>
         <span>同意协议并注册《尚品汇用户协议》</span>
         <span class="error-msg">错误提示信息</span>
       </div>
@@ -101,10 +101,16 @@ export default {
           this.$store.dispatch("userRegister", { phone, code, password });
           this.$router.push("/login");
         }
+        if(phone && code && !agree){
+          alert('您需要同意《尚品汇用户协议》');
+        }
       } catch (error) {
         alert("error.message");
       }
     },
+    isAgree(){
+      this.agree=!this.agree;
+    }
   },
 };
 </script>
