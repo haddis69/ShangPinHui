@@ -392,7 +392,9 @@ export default {
       //所以可以使用try catch，如果try里的语句成功，即另一边返回的值(result)是成功值，就不catch，否则就执行catch
       try{
         await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum});
-        this.$router.push({name:'addcartsuccess'});
+        //会话存储
+        sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo));
+        this.$router.push({name:'addcartsuccess',query:{skuNum:this.skuNum}});
       }catch(error){
         console.log(error.message);
       }

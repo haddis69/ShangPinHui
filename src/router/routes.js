@@ -4,6 +4,7 @@ import Register from '../pages/Register';
 import Search from '../pages/Search';
 import Detail from '../pages/Detail'
 import AddCartSuccess from '../pages/AddCartSuccess'
+import ShopCart from '../pages/ShopCart'
 export default [
     {
         path:'/home',
@@ -39,6 +40,12 @@ export default [
         path:"/addcartsuccess",
         name:'addcartsuccess',
         component:AddCartSuccess,
+        meta:{show:true}
+    },
+    {
+        path:"/shopcart",
+        name:'shopcart',
+        component:ShopCart,
         meta:{show:true}
     },
     {

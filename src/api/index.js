@@ -32,5 +32,15 @@ export const reqGetSearchInfo=(params)=>requests({url:'/list',method:'POST',data
 export const reqGoodsInfo=(skuid)=>requests({url:`/item/${skuid}`,method:'GET'})
 
 //将产品添加到购物车或者或者更新个数
-///api/cart/addToCart/{ skuId }/{ skuNum }
+// /api/cart/addToCart/{ skuId }/{ skuNum }
 export const reqAddOrUpdateShopCart=(skuId,skuNum)=>requests({url:`/cart/addToCart/${skuId}/${skuNum}`,method:'POST'})
+
+// /api/cart/cartList   get
+//请求头里已经有uuid了，返回的数据都是根据uuid查询到的，所以无需传参
+export const reqCartList=()=>requests({url:'/cart/cartList',method:'GET'})
+
+//删除购物车   /api/cart/deleteCart/{skuId}  DELETE
+export const reqDeleteCartById=(skuId)=>requests({url:`/cart/deleteCart/${skuId}`,method:'DELETE'})
+
+//切换商品选中状态   /api/cart/checkCart/{skuId}/{isChecked}   get
+export const reqUpdateCheckById=({skuId,isChecked})=> requests({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'GET'});
