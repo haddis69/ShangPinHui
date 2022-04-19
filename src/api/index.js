@@ -44,3 +44,10 @@ export const reqDeleteCartById=(skuId)=>requests({url:`/cart/deleteCart/${skuId}
 
 //切换商品选中状态   /api/cart/checkCart/{skuId}/{isChecked}   get
 export const reqUpdateCheckById=({skuId,isChecked})=> requests({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'GET'});
+
+//验证码   /api/user/passport/sendCode/{phone}   get
+export const reqGetCode=(phone)=>requests({url:`/user/passport/sendCode/${phone}`,method:'GET'});
+
+//注册接口 /api/user/passport/register   post
+//post用data
+export const reqUserRegister=(data)=>requests({url:'/user/passport/register',data,method:'POST'})
