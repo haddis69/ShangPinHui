@@ -51,3 +51,13 @@ export const reqGetCode=(phone)=>requests({url:`/user/passport/sendCode/${phone}
 //注册接口 /api/user/passport/register   post
 //post用data
 export const reqUserRegister=(data)=>requests({url:'/user/passport/register',data,method:'POST'})
+
+//登录接口   /api/user/passport/login   post
+export const reqUserLogin=(data)=>requests({url:'/user/passport/login',data,method:'POST'});
+
+//获取用户信息   /api/user/passport/auth/getUserInfo   get   需要带着token向服务器要信息 
+//这里和uuid一样 放在请求头里 服务器并没有让我们带参
+export const reqUserInfo=()=>requests({url:'/user/passport/auth/getUserInfo',method:'GET'});
+
+//退出登录   /api/user/passport/logout   GET
+export const reqLogout=()=>requests({url:'/user/passport/logout',method:'GET'});

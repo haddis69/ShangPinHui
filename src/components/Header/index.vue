@@ -1,69 +1,106 @@
 <template>
-        <!-- 头部 -->
-        <header class="header">
-            <!-- 头部的第一行 -->
-            <div class="top">
-                <div class="container">
-                    <div class="loginList">
-                        <p>尚品汇欢迎您！</p>
-                        <p>
-                            <span>请</span>
-                            <router-link to="/login">登录</router-link>
-                            <router-link to="/register" class="register">免费注册</router-link>
-                        </p>
-                    </div>
-                    <div class="typeList">
-                        <a href="###">我的订单</a>
-                        <a href="###">我的购物车</a>
-                        <a href="###">我的尚品汇</a>
-                        <a href="###">尚品汇会员</a>
-                        <a href="###">企业采购</a>
-                        <a href="###">关注尚品汇</a>
-                        <a href="###">合作招商</a>
-                        <a href="###">商家后台</a>
-                    </div>
-                </div>
-            </div>
-            <!--头部第二行 搜索区域-->
-            <div class="bottom">
-                <h1 class="logoArea">
-                    <router-link class="logo" to="/home">
-                        <img src="./images/logo.png" alt="">
-                    </router-link>
-                </h1>
-                <div class="searchArea">
-                    <form action="###" class="searchForm">
-                        <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword" />
-                        <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">搜索</button>
-                    </form>
-                </div>
-            </div>
-        </header>
+  <!-- 头部 -->
+  <header class="header">
+    <!-- 头部的第一行 -->
+    <div class="top">
+      <div class="container">
+        <div class="loginList">
+          <p>尚品汇欢迎您！</p>
+          <!-- 登录了就不显示这里的p标签 -->
+          <p v-if="!userName">
+            <span>请</span>
+            <router-link to="/login">登录</router-link>
+            <router-link to="/register" class="register">免费注册</router-link>
+          </p>
+          <!-- 登录了就显示用户名 -->
+          <p v-else>
+            <a>{{ userName }}</a>
+            <a class="register" @click="logout">退出登录</a>
+          </p>
+        </div>
+        <div class="typeList">
+          <a href="###">我的订单</a>
+          <a href="###">我的购物车</a>
+          <a href="###">我的尚品汇</a>
+          <a href="###">尚品汇会员</a>
+          <a href="###">企业采购</a>
+          <a href="###">关注尚品汇</a>
+          <a href="###">合作招商</a>
+          <a href="###">商家后台</a>
+        </div>
+      </div>
+    </div>
+    <!--头部第二行 搜索区域-->
+    <div class="bottom">
+      <h1 class="logoArea">
+        <router-link class="logo" to="/home">
+          <img src="./images/logo.png" alt="" />
+        </router-link>
+      </h1>
+      <div class="searchArea">
+        <form action="###" class="searchForm">
+          <input
+            type="text"
+            id="autocomplete"
+            class="input-error input-xxlarge"
+            v-model="keyword"
+          />
+          <button
+            class="sui-btn btn-xlarge btn-danger"
+            type="button"
+            @click="goSearch"
+          >
+            搜索
+          </button>
+        </form>
+      </div>
+    </div>
+  </header>
 </template>
 <script>
-  export default {
-    name:'Header',
-    data() {
-      return {
-        keyword:''
+export default {
+  name: "Header",
+  data() {
+    return {
+      keyword: "",
+    };
+  },
+  methods: {
+    goSearch() {
+      if (this.$route.query) {
+        let location = {
+          name: "search",
+          params: { keyword: this.keyword || undefined },
+        };
+        location.query = this.$route.query;
+        this.$router.push(location);
       }
     },
-    methods: {
-      goSearch(){
-          if(this.$route.query){
-            let location=({name:'search',params:{keyword:this.keyword||undefined}});
-            location.query=this.$route.query;
-            this.$router.push(location);
-          }
-        }
-      },
-      mounted() {
-        //执行函数的组件通过$bus的on事件，因为前文的emit的值一样，都是clear，这里on就执行具体的事件
-        this.$bus.$on("clear",()=>{
-          this.keyword='';
-        })
-      },
-  }
+    //退出登录
+    //1.需要发请求，通知服务器清除token
+    //2.清除当前项目的各种数据
+    async logout() {
+      try{
+        await this.$store.dispatch('userLogout');
+        //回到首页
+        this.$router.push('/home');
+      }catch(error){
+        alert(error.message);
+      }
+    },
+  },
+  mounted() {
+    //执行函数的组件通过$bus的on事件，因为前文的emit的值一样，都是clear，这里on就执行具体的事件
+    this.$bus.$on("clear", () => {
+      this.keyword = "";
+    });
+  },
+  computed: {
+    userName() {
+      return this.$store.state.user.userInfo.name;
+    },
+  },
+};
 </script>
 <style scoped>
 .header > .top {
