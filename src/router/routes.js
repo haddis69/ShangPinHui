@@ -4,7 +4,8 @@ import Register from '../pages/Register';
 import Search from '../pages/Search';
 import Detail from '../pages/Detail'
 import AddCartSuccess from '../pages/AddCartSuccess'
-import ShopCart from '../pages/ShopCart'
+import ShopCart from '../pages/ShopCart';
+import Trade from '../pages/Trade'
 export default [
     {
         path:'/home',
@@ -46,6 +47,12 @@ export default [
         path:"/shopcart",
         name:'shopcart',
         component:ShopCart,
+        meta:{show:true}
+    },
+    {
+        path:"/trade",
+        name:'trade',
+        component:Trade,
         meta:{show:true}
     },
     {

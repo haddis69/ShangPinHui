@@ -7,6 +7,7 @@ import search from "./search";
 import detail from "./detail";
 import shopcart from "./shopcart";
 import user from "./user";
+import trade from "./trade";
 //对外暴露一个store实例，里面传入配置信息,这里是模块
 export default new Vuex.Store({
     modules:{
@@ -14,6 +15,7 @@ export default new Vuex.Store({
         search,
         detail,
         shopcart,
-        user
+        user,
+        trade
     }
 });

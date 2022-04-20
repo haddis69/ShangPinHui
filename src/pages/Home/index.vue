@@ -33,8 +33,8 @@ export default {
     mounted() {
         //获取floor组件的数据
         this.$store.dispatch('getFloorList');
-        //获取用户信息
-        this.$store.dispatch('getUserInfo');
+        //获取用户信息，有了路由守卫者后这里的功能移到router里
+        // this.$store.dispatch('getUserInfo');
     },
     computed: {
       ...mapState({floorList:state=>state.home.floorList})

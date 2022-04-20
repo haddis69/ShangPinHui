@@ -69,6 +69,8 @@ const actions = {
     if (result.code === 200) {
       commit("GETUSERINFO", result.data);
       return "ok";
+    }else{
+      Promise.reject(new Error("get user information failed"));
     }
   },
   async userLogout({ commit }) {
@@ -79,7 +81,7 @@ const actions = {
       commit("CLEARUSERINFO");
       return "ok";
     } else {
-      Promise.reject(new Error("get user information failed"));
+      Promise.reject(new Error("user logout failed"));
     }
   },
 };
