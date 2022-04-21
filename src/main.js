@@ -8,17 +8,30 @@ import './mock/mockServe'
 import 'swiper/css/swiper.css'
 import Carousel from './components/Carousel'
 import Pagination from './components/Pagination'
+import {Button,MessageBox} from 'element-ui';
 //全局组件的注册，第一个参数是组件名，这里由于TypeNav.name恰好是TypeNav就这样写，第二个参数是具体指哪个组件
 //全局组件使用时不需要再重新注册，直接使用即可
 Vue.component(TypeNav.name,TypeNav);
 Vue.component(Carousel.name,Carousel);
 Vue.component(Pagination.name,Pagination);
+//element-ui的第一种注册方式
+Vue.component(Button.name, Button);
+//element-ui的第二种注册方式
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+
 Vue.config.productionTip = false
+
+//统一引用所有api暴露的接口，免得单独引入，练习理解原型链的相关知识
+//API这里是一个对象
+import * as API from './api';
 new Vue({
   render: h => h(App),
   //全局事件总线
   beforeCreate(){
     Vue.prototype.$bus=this;
+    //所有vm,vc最后都能找到Vue.prototype，挂载一次全局使用
+    Vue.prototype.$API=API;
   },
   //主文件里引入并使用路由
   router,

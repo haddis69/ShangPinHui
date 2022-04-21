@@ -15,7 +15,7 @@ router.beforeEach(async(to,from,next)=>{
     //to 去哪里 path属性可以得到
     //from 从哪里来
     //next 放行函数 里面传路径放行到指定路由
-    next();
+    // next();
     //登录了才会有token
     let token=store.state.user.token;
     //store.state.user.userInfo.name是用户信息中的用户名，是一个字符串，有就是真没有就是假
