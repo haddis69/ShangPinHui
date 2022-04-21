@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TypeNav/>
+    <TypeNav />
     <div class="main">
       <div class="py-container">
         <!--bread-->
@@ -11,33 +11,71 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x" v-show="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
-            <li class="with-x" v-show="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">x</i></li>
-            <li class="with-x" v-show="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">x</i></li>
-            <li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">{{attrValue.split(":")[1]}}<i @click="removeAttr(index)">x</i></li>
+            <li class="with-x" v-show="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">x</i>
+            </li>
+            <li class="with-x" v-show="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">x</i>
+            </li>
+            <li class="with-x" v-show="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeTrademark">x</i>
+            </li>
+            <li
+              class="with-x"
+              v-for="(attrValue, index) in searchParams.props"
+              :key="index"
+            >
+              {{ attrValue.split(":")[1] }}<i @click="removeAttr(index)">x</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @tradeMarkInfo="tradeMarkInfo" @attrInfo="attrInfo"/>
+        <SearchSelector @tradeMarkInfo="tradeMarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{active:isOne}" @click="changeOrder('1')">
-                  <a href="#">综合 <span v-show="isOne" class="iconfont" :class="{'icon-direction-up':isAsc,'icon-direction-down':isDesc}"></span></a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')">
+                  <a href="#"
+                    >综合
+                    <span
+                      v-show="isOne"
+                      class="iconfont"
+                      :class="{
+                        'icon-direction-up': isAsc,
+                        'icon-direction-down': isDesc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
-                <li :class="{active:isTwo}" @click="changeOrder('2')">
-                  <a href="#">价格 <span v-show="isTwo" class="iconfont" :class="{'icon-direction-up':isAsc,'icon-direction-down':isDesc}"></span></a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')">
+                  <a href="#"
+                    >价格
+                    <span
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{
+                        'icon-direction-up': isAsc,
+                        'icon-direction-down': isDesc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
               </ul>
             </div>
           </div>
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5" v-for="(good,index) in goodsList" :key="good.id">
+              <li
+                class="yui3-u-1-5"
+                v-for="(good, index) in goodsList"
+                :key="good.id"
+              >
                 <div class="list-wrap">
                   <div class="p-img">
                     <router-link :to="`/detail/${good.id}`">
@@ -47,7 +85,7 @@
                   <div class="price">
                     <strong>
                       <em>¥</em>
-                      <i> {{good.price}}</i>
+                      <i> {{ good.price }}</i>
                     </strong>
                   </div>
                   <div class="attr">
@@ -55,7 +93,7 @@
                       target="_blank"
                       href="item.html"
                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >{{good.title}}</a
+                      >{{ good.title }}</a
                     >
                   </div>
                   <div class="commit">
@@ -76,7 +114,13 @@
               </li>
             </ul>
           </div>
-         <Pagination :pageno="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo" />
+          <Pagination
+            :pageno="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -85,7 +129,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import {mapGetters,mapState} from 'vuex'
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "Search",
   components: {
@@ -93,7 +137,7 @@ export default {
   },
   data() {
     return {
-      searchParams:{
+      searchParams: {
         //一级分类id
         category1Id: "",
         //二级分类id
@@ -113,128 +157,127 @@ export default {
         //平台售卖属性的参数
         props: [],
         //品牌
-        trademark: ""
-      }
-    }
+        trademark: "",
+      },
+    };
   },
   beforeMount() {
     //笨方法就是this.searchParams.category1Id=this.$route.query.category1Id这种语句重复写
     //Search组件挂载之前，这个钩子可以修改数据
     //Object.assign的巧用：es6新方法，把第二个及以后的数据“倒入”到第一个对象里，后面的同名属性覆盖前面的
-    Object.assign(this.searchParams,this.$route.query,this.$route.params)
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
     //mounted只会执行一次，如果写在mounted里之后就不会发送请求
     this.getData();
   },
-  computed:{
+  computed: {
     //Getters不分模块，从数组中捞，捞出来的数据直接就能用
-    ...mapGetters(['goodsList']),
+    ...mapGetters(["goodsList"]),
     ...mapState({
-      total:state=>state.search.searchList.total
+      total: (state) => state.search.searchList.total,
     }),
-    isOne(){
-      return this.searchParams.order.indexOf(1)!=-1;
+    isOne() {
+      return this.searchParams.order.indexOf(1) != -1;
     },
-    isTwo(){
-      return this.searchParams.order.indexOf(2)!=-1;
+    isTwo() {
+      return this.searchParams.order.indexOf(2) != -1;
     },
-    isAsc(){
-      return this.searchParams.order.indexOf('asc')!=-1;
+    isAsc() {
+      return this.searchParams.order.indexOf("asc") != -1;
     },
-    isDesc(){
-      return this.searchParams.order.indexOf('desc')!=-1;
-    }
+    isDesc() {
+      return this.searchParams.order.indexOf("desc") != -1;
+    },
   },
   methods: {
-    getData(){
-      this.$store.dispatch('getSearchList',this.searchParams);
+    getData() {
+      this.$store.dispatch("getSearchList", this.searchParams);
     },
-    removeCategoryName(){
+    removeCategoryName() {
       //上面的面包屑显示与否是双向绑定的，categoryName置空上面自然就没了,当然categoryid也要置空
-      this.searchParams.categoryName=undefined;
-      this.searchParams.category1Id=undefined;
-      this.searchParams.category2Id=undefined;
-      this.searchParams.category3Id=undefined;
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
       //还要再发一次请求
       this.getData();
       //地址栏清空,自己跳自己，就清空query了
       //如果有params,就应该带着，本意是删除query
-      if(this.$route.params){
-        this.$router.push({name:'search',params:this.$route.params});
+      if (this.$route.params) {
+        this.$router.push({ name: "search", params: this.$route.params });
       }
     },
-    removeKeyword(){
-      this.searchParams.keyword='';
+    removeKeyword() {
+      this.searchParams.keyword = "";
       this.getData();
       // main.js中注册了全局时间总线之后，这里emit想执行的函数
       this.$bus.$emit("clear");
-      if(this.$route.query){
-        this.$router.push({name:'search',query:this.$route.query});
+      if (this.$route.query) {
+        this.$router.push({ name: "search", query: this.$route.query });
       }
     },
-    removeTrademark(){
-      this.searchParams.trademark='';
+    removeTrademark() {
+      this.searchParams.trademark = "";
       this.getData();
     },
     //子给父传参数，通常使用自定义事件
     //父组件给子组件在标签里注入一个@开头的自定义事件，值是一个回调函数
     //子组件emit监听这个事件，并且第二个参数里就是想要携带的参数值
     //父组件这边的回调函数就能在括号里使用这个参数值
-    tradeMarkInfo(trademark){
-      this.searchParams.trademark=`${trademark.tmId}:${trademark.tmName}`;
+    tradeMarkInfo(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getData();
     },
-    attrInfo(attr,attrValue){
-        //这个格式是由服务器的数据类型决定的
-        let props=`${attr.attrId}:${attrValue}:${attr.attrName}`;
-        //数组去重
-        if(this.searchParams.props.indexOf(props)===-1){
-          this.searchParams.props.push(props);
-        }
-        this.getData();
+    attrInfo(attr, attrValue) {
+      //这个格式是由服务器的数据类型决定的
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      //数组去重
+      if (this.searchParams.props.indexOf(props) === -1) {
+        this.searchParams.props.push(props);
+      }
+      this.getData();
     },
-    removeAttr(index){
-      this.searchParams.props.splice(index,1);
+    removeAttr(index) {
+      this.searchParams.props.splice(index, 1);
       this.getData();
     },
     //传入的参数根据点击的li不同，flag可能有2个值
-    changeOrder(flag){
-      let originOrder=this.searchParams.order;
+    changeOrder(flag) {
+      let originOrder = this.searchParams.order;
       // originalFlag是1 originalSort是desc 这是默认值
       //但是下面重新给this.searchParams.order赋值之后，originFlag，originSort就会在页面重新渲染之后取得新值
       //至于升序降序的具体功能，那是后端完成的，不是前端的逻辑代码
-      let originFlag=originOrder.split(":")[0],
-          originSort=originOrder.split(":")[1],
-          newOrder='';
-      if(flag==originFlag){
-        newOrder=`${originFlag}:${originSort=='desc'?'asc':'desc'}`;
-      }else{
-        newOrder=`${flag}:${'desc'}`
+      let originFlag = originOrder.split(":")[0],
+        originSort = originOrder.split(":")[1],
+        newOrder = "";
+      if (flag == originFlag) {
+        newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`;
+      } else {
+        newOrder = `${flag}:${"desc"}`;
       }
-      this.searchParams.order=newOrder;
+      this.searchParams.order = newOrder;
       this.getData();
-      
     },
     //获取当前第几页
-    getPageNo(pageNo){
-      this.searchParams.pageNo=pageNo;
+    getPageNo(pageNo) {
+      this.searchParams.pageNo = pageNo;
       this.getData();
-    }
+    },
   },
   watch: {
     // $route和data里的属性平级，想监听直接写
-    $route(newValue,oldValue){
-      Object.assign(this.searchParams,this.$route.query,this.$route.params);
+    $route(newValue, oldValue) {
+      Object.assign(this.searchParams, this.$route.query, this.$route.params);
       this.getData();
       //换条件搜索之后，searchParams的catagoryId不会清空
       //categoryName和keyWord不重新置空很好理解，每次重新搜索都会赋值，其余的交给后端
       //而categoryId如果不置空就会被动携带
       //属性值为空的字段还是被带给服务器，但是写成undefined就不会带给服务器了
-      this.searchParams.category1Id=undefined;
-      this.searchParams.category2Id=undefined;
-      this.searchParams.category3Id=undefined;
-    }
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+    },
   },
 };
 </script>

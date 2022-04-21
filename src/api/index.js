@@ -72,9 +72,11 @@ export const reqOrderInfo=()=>requests({url:'/order/auth/trade',method:'GET'});
 //从这里开始不再使用vuex，练习使用其它方法
 export const  reqSubmitOrder=(tradeNo,data)=>requests({url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,data,method:'POST'});
 
-
 //获取支付信息   /api/payment/weixin/createNative/{orderId}  get
 export const reqPayInfo=(orderId)=>requests({url:`/payment/weixin/createNative/${orderId}`,method:'GET'})
 
 //获取订单支付状态   /api/payment/weixin/queryPayStatus/{orderId}  GET
 export const reqPayStatus=(orderId)=>requests({url:`/payment/weixin/queryPayStatus/${orderId}`,method:'GET'});
+
+//获取我的订单列表   /api/order/auth/{page}/{limit}   get
+export const reqMyOrderList=(page,limit)=>requests({url:`/order/auth/${page}/${limit}`,method:'GET'});

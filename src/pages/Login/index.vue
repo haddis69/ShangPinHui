@@ -92,7 +92,11 @@ export default {
         if (phone && password) {
           await this.$store.dispatch("userLogin", { phone, password });
           //跳转到路由首页
-          this.$router.push('/home');
+          //看路由query参数里有没有重定向的参数
+          //路由里的参数是router组件里写在导航栏里的，这里可以看到
+          // this.$router.push('/home');
+          let toPath=this.$route.query.redirect || '/home';
+          this.$router.push(toPath);
         }
       } catch (error) {
         alert(error.message);

@@ -50,7 +50,20 @@ router.beforeEach(async(to,from,next)=>{
         }
     }else{
         //没登录，游客身份
-        next();
+        //不能去交易相关，支付相关(pay||paysuccess)，不能去个人中心
+        //没登录就去上面的这些路由，跳到登录页
+        //其它情况 放行
+        let toPath=to.path;
+        //包含了/trade /pay或者/paysuccess indexOf('/pay')里包含了paysuccess
+        if(toPath.indexOf('/trade')!=-1||toPath.indexOf('/pay')!=-1||toPath.indexOf('/center')!=-1){
+            //query参数 把未登录但想去的信息存储在路由当中
+            //登录之后直接跳到当时想去(重定向的页码)
+            //在登录组件里也重新写了跳转的逻辑  let toPath=this.$route.query.redirect || '/home';
+            //this.$route.query.redirect里有值，就跳转这个值，否则就跳home
+            next('/login?redirect='+toPath);
+        }else{
+            next();
+        }
     }
 })
 export default router;
