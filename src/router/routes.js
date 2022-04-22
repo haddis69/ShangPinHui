@@ -1,7 +1,7 @@
-import Home from '../pages/Home';
+// import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import Search from '../pages/Search';
+// import Search from '../pages/Search';
 import Detail from '../pages/Detail'
 import AddCartSuccess from '../pages/AddCartSuccess'
 import ShopCart from '../pages/ShopCart';
@@ -11,11 +11,18 @@ import PaySuccess from '../pages/PaySuccess'
 import Center from '../pages/Center'
 import MyOrder from '../pages/Center/myOrder';
 import GroupOrder from '../pages/Center/groupOrder';
+//路由懒加载
+const foo=()=>{
+    //这里返回的是一个Promise对象
+    //访问的时候才会执行这里的语句，平时不会加载这个路由。这个箭头函数可以简写成一行
+    return import('../pages/Home')
+}
 export default [
     {
         path:'/home',
         name:'home',
-        component:Home,
+        component:foo,
+        //路由懒加载
         meta:{show:true}
     },
     {
@@ -33,7 +40,8 @@ export default [
     {
         path:"/search/:keyword?",
         name:'search',
-        component:Search,
+        //路由懒加载的简写
+        component:()=>import('../pages/Search'),
         meta:{show:true}
     },
     {
@@ -58,13 +66,29 @@ export default [
         path:"/trade",
         name:'trade',
         component:Trade,
-        meta:{show:true}
+        meta:{show:true},
+        //独享守卫
+        beforeEnter: (to, from, next) => {
+            if(from.path=='/shopcart'){
+                next();
+            }else{
+                next(false);
+            }
+        }
     },
     {
         path:"/pay",
         name:'pay',
         component:Pay,
-        meta:{show:true}
+        meta:{show:true},
+        beforeEnter: (to, from, next) => {
+            if(from.path=='/trade'){
+                next();
+            }
+            else{
+                next(false);
+            }
+        }
     },
     {
         path:"/paysuccess",
